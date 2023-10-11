@@ -1,0 +1,17 @@
+.inline{
+    display: inline-block;
+}
+
+.pass{
+    border: none;
+    background: none;
+    width: 70%;
+}
+
+.pass::selection{
+    background: none;
+}
+
+.pass:focus{
+    outline: none;
+}
