@@ -41,7 +41,7 @@
                                 <label for="nombre_modal" class="col-form-label text-dark"><strong>Nombre: </strong></label>
                             </div>
                             <div class="col-auto">
-                                <span><a id="url_modal"></a></span>
+                                <span><a target="_blank" id="url_modal"></a></span>
                             </div>
                         </div>
 
@@ -84,7 +84,33 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="detallesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-danger" id="detallesLabel">Eliminar establecimiento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="id_eliminar">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 class="text-danger">¿Estas seguro que quieres eliminar el establecimiento <span id="nombre_eliminar"></span>?</h2>
+                                <p class="text-dark" id="datos_eliminar">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btn_confirmar_eliminar">Eliminar</button>
                     </div>
                 </div>
             </div>

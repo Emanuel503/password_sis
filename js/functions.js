@@ -74,6 +74,7 @@ $(document).ready(function(){
                     <th width="400px" class="text-center">Comando</th>
                     <th class="text-center">Password 1</th>
                     <th class="text-center">Password 2</th>
+                    <th class="text-center">Acciones</th>
                 </thead>
                 <tbody id="table_password">
         
@@ -99,6 +100,7 @@ $(document).ready(function(){
                         <input class="pass" readonly value="${estab.password2}">
                         <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
+                    <td><button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Eliminar" onclick="confimarEliminar(${estab.id})" class="btn btn-danger btn-sm"><img src="img/x-bold.svg"></button></td>
                 </tr>
             `)
         });
@@ -106,18 +108,6 @@ $(document).ready(function(){
         new DataTable('#table',{
             order: [[0, 'desc']]
         });
-    }
-
-    //Funcion para obtener los datos guardados
-    function obtenerDatos(){
-        let data = JSON.parse(localStorage.getItem('data'))
-        
-        if(!data){
-            localStorage.setItem('data', JSON.stringify([]))
-            data = [];
-        }
-        
-        return data
     }
     
     //Copiar al portapapeles
@@ -141,10 +131,50 @@ $(document).ready(function(){
         }, 3000);
     });
 
+    //Valida si existe el establecimiento
     function validarExistencia(nombre){
         datos = obtenerDatos()
         const resultado = datos.find(estab => estab.nombre === nombre)
 
         return resultado;
     }
+
+    //Funcion para eliminar el establecimiento
+    $('#btn_confirmar_eliminar').on('click', function(){
+        $('#eliminar').modal('hide')
+        const id = $('#id_eliminar').val()
+        datos = obtenerDatos()
+        const index = datos.findIndex(estab => estab.id === id)
+        datos.splice(index, 1)
+        localStorage.setItem('data',JSON.stringify(datos));
+        cargarDatos(datos);
+    })
+
 })
+
+//Funcion para obtener los datos guardados
+function obtenerDatos(){
+    let data = JSON.parse(localStorage.getItem('data'))
+    
+    if(!data){
+        localStorage.setItem('data', JSON.stringify([]))
+        data = [];
+    }
+    
+    return data
+}
+
+//Funcion para mostrar el modal de confirmacion de eliminar
+function confimarEliminar(id){
+    datos = obtenerDatos()
+    const estab = datos.find(estab => estab.id === id)
+    $('#nombre_eliminar').text(estab.nombre)
+    $('#id_eliminar').val(estab.id)
+    $('#datos_eliminar').html(`
+        <a target="_blank" href="${estab.url}">${estab.url}</a><br><br>
+        <strong>Comando:</strong> ${estab.ssh}<br>
+        <strong>Password 1:</strong> ${estab.password1}<br>
+        <strong>Password 2:</strong> ${estab.password2}
+    `)
+    $('#eliminar').modal('show')
+}
