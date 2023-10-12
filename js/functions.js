@@ -1,11 +1,13 @@
 $(document).ready(function(){
     
-    //Muetra los datos gudardados en localStorage al cargar la pagina
+    //Muetra los datos guardados en localStorage al cargar la pagina
     cargarDatos(obtenerDatos())
 
     //Envio de formulario
-    $('#form').submit(function(){
+    $('#form').submit(function(e){
         try{
+            e.preventDefault(e);
+
             const data = obtenerDatos();
 
             const url = $('#url').val()
@@ -36,8 +38,9 @@ $(document).ready(function(){
             localStorage.setItem('id', JSON.stringify(parseInt(id) + 1))
             localStorage.setItem('data', JSON.stringify(data))
 
-            $('#nombre').val("");
             $('#url').val("");
+
+            cargarDatos(obtenerDatos())
         }catch(err){
             console.log(err);
         }
@@ -100,9 +103,9 @@ $(document).ready(function(){
         
         return data
     }
-
+    
     //Copiar al portapapeles
-    $('.copy').on('click', function() {
+    $('#datos').on('click', '.copy', function () {
         let img = $(this).children('img');
 
         img.attr("src", `img/check.svg`)
