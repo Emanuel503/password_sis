@@ -29,29 +29,33 @@ $(document).ready(function(){
             $('#password1_modal').val(password1)
             $('#password2_modal').val(password2)
             $('#detalles').modal('show');
-
-            if(!id){
-                localStorage.setItem('id', JSON.stringify(1))
-                id = 1;
-            }
-
-            let estab = {
-                id : id,
-                url: url,
-                nombre : nombre,
-                ssh : ssh,
-                password1: password1,
-                password2: password2,
-            }
-
-            data.push(estab)
-
-            localStorage.setItem('id', JSON.stringify(parseInt(id) + 1))
-            localStorage.setItem('data', JSON.stringify(data))
-
             $('#url').val("");
 
-            cargarDatos(obtenerDatos())
+            if(!validarExistencia(nombre)){
+                $('#mensaje_modal').text("Establecimiento guardado correctamente")
+                if(!id){
+                    localStorage.setItem('id', JSON.stringify(1))
+                    id = 1;
+                }
+    
+                let estab = {
+                    id : id,
+                    url: url,
+                    nombre : nombre,
+                    ssh : ssh,
+                    password1: password1,
+                    password2: password2,
+                }
+    
+                data.push(estab)
+    
+                localStorage.setItem('id', JSON.stringify(parseInt(id) + 1))
+                localStorage.setItem('data', JSON.stringify(data))
+
+                cargarDatos(obtenerDatos())
+            }else{
+                $('#mensaje_modal').text("Este establecimiento ya esta guardado")
+            }  
         }catch(err){
             console.log(err);
         }
@@ -136,4 +140,11 @@ $(document).ready(function(){
             tooltip.setContent({ '.tooltip-inner': 'Copiar al portapapeles' })
         }, 3000);
     });
+
+    function validarExistencia(nombre){
+        datos = obtenerDatos()
+        const resultado = datos.find(estab => estab.nombre === nombre)
+
+        return resultado;
+    }
 })
