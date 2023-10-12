@@ -3,6 +3,10 @@ $(document).ready(function(){
     //Muetra los datos guardados en localStorage al cargar la pagina
     cargarDatos(obtenerDatos())
 
+    //Inicio de los tooltip
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    
     //Envio de formulario
     $('#form').submit(function(e){
         try{
@@ -74,15 +78,15 @@ $(document).ready(function(){
                     <td><a target='_blank' href="${estab.url}">${estab.nombre}</a></td>
                     <td>
                         <input class="pass" readonly value="${estab.ssh}">
-                        <button class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
+                        <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
                     <td>
                         <input class="pass" readonly value="${estab.password1}">
-                        <button class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
+                        <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
                     <td>
                         <input class="pass" readonly value="${estab.password2}">
-                        <button class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
+                        <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
                 </tr>
             `)
@@ -93,6 +97,7 @@ $(document).ready(function(){
         });
     }
 
+    //Funcion para obtener los datos guardados
     function obtenerDatos(){
         let data = JSON.parse(localStorage.getItem('data'))
         
@@ -106,17 +111,22 @@ $(document).ready(function(){
     
     //Copiar al portapapeles
     $('#datos').on('click', '.copy', function () {
-        let img = $(this).children('img');
+        let boton = this;
+        let img = $(boton).children('img');
 
         img.attr("src", `img/check.svg`)
+        const tooltip = bootstrap.Tooltip.getInstance(boton)
+        tooltip.setContent({ '.tooltip-inner': 'Copiado!' })
 
-        const padre = $(this).parent();
+        const padre = $(boton).parent();
         const input = padre.find('input');
         input.select();
         document.execCommand("copy");
 
         setTimeout(function() {
             img.attr("src", `img/save-copy-24-filled.svg`)
+            const tooltip = bootstrap.Tooltip.getInstance(boton)
+            tooltip.setContent({ '.tooltip-inner': 'Copiar al portapapeles' })
         }, 3000);
     });
 })
