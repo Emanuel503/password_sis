@@ -23,6 +23,13 @@ $(document).ready(function(){
 
             let id = JSON.parse(localStorage.getItem('id'))
 
+            $('#boton_modal').show();
+            $('#url_modal').text(nombre).attr('href', url)
+            $('#comando_modal').val(ssh)
+            $('#password1_modal').val(password1)
+            $('#password2_modal').val(password2)
+            $('#detalles').modal('show');
+
             if(!id){
                 localStorage.setItem('id', JSON.stringify(1))
                 id = 1;
@@ -52,7 +59,7 @@ $(document).ready(function(){
 
     //Funcion para cargar los datos en la tabla
     function cargarDatos(data){
-        
+        $('.copy').tooltip();
         $('#datos').empty();
 
         let table = `
@@ -110,7 +117,8 @@ $(document).ready(function(){
     }
     
     //Copiar al portapapeles
-    $('#datos').on('click', '.copy', function () {
+    $('#content').on('click', '.copy', function () {
+        $('.copy').tooltip();
         let boton = this;
         let img = $(boton).children('img');
 
@@ -125,7 +133,6 @@ $(document).ready(function(){
 
         setTimeout(function() {
             img.attr("src", `img/save-copy-24-filled.svg`)
-            const tooltip = bootstrap.Tooltip.getInstance(boton)
             tooltip.setContent({ '.tooltip-inner': 'Copiar al portapapeles' })
         }, 3000);
     });

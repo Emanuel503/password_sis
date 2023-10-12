@@ -10,7 +10,7 @@
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark">
-    <div class="container text-light">
+    <div id="content" class="container text-light">
         <div class="row mt-5">
             <div class="col-sm-6">
                 <form action="" method="post" id="form">
@@ -20,10 +20,69 @@
                     <button class="btn btn-success btn-lg my-5" type="submit">Generar</button>
                 </form>
             </div>
+            <div class="col-sm-6">
+                <button id="boton_modal" type="button" class="btn btn-primary btn-lg mx-5 my-4" data-bs-toggle="modal" data-bs-target="#detalles" style="display: none;">Ver</button>
+            </div>
         </div>
 
         <div id="datos" class="table-responsive">
             
+        </div>
+
+        <div class="modal fade" id="detalles" tabindex="-1" aria-labelledby="detallesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-dark" id="detallesLabel">Datos del establecimiento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3 align-items-center text-dark">
+                            <div class="col-auto">
+                                <label for="nombre_modal" class="col-form-label text-dark"><strong>Nombre: </strong></label>
+                            </div>
+                            <div class="col-auto">
+                                <span><a id="url_modal"></a></span>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="comando_modal" class="form-label text-dark"><strong>Comando: </strong></label>
+                            </div>
+                            <div class="col-7">
+                                <input id="comando_modal" class="pass" readonly value="">
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
+                            </div>
+                        </div>
+
+                        <div class="row my-3">
+                            <div class="col-2">
+                                <label for="password1_modal" class="form-label text-dark"><strong>Password 1: </strong></label>
+                            </div>
+                            <div class="col-7">
+                                <input id="password1_modal" class="pass" readonly value="">
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="password2_modal" class="form-label text-dark"><strong>Password 2: </strong></label>
+                            </div>
+                            <div class="col-7">
+                                <input id="password2_modal" class="pass" readonly value="">
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
