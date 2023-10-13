@@ -49,10 +49,12 @@ $(document).ready(function(){
                 localStorage.setItem('data', JSON.stringify(data))
 
                 cargarDatos(obtenerDatos())
+                toastr.success('Establecimiento guardado correctamente');
             }else{
                 mensaje = "Este establecimiento ya esta guardado"
                 id = establecimiento.id; 
                 correcta = establecimiento.correcta;
+                toastr.info('Este establecimiento ya esta guardado');
             }
 
             $('#boton_modal').show();
@@ -133,6 +135,8 @@ $(document).ready(function(){
             img.attr("src", `img/save-copy-24-filled.svg`)
             tooltip.setContent({ '.tooltip-inner': 'Copiar al portapapeles' })
         }, 3000);
+
+        toastr.success('Copiado al porta papeles');
     });
 
     //Valida si existe el establecimiento
@@ -152,6 +156,7 @@ $(document).ready(function(){
         datos.splice(index, 1)
         localStorage.setItem('data',JSON.stringify(datos));
         cargarDatos(datos);
+        toastr.success('Establecimiento eliminado correctamente');
     })
 
     //Funcion para escoger password correcta
@@ -175,6 +180,7 @@ $(document).ready(function(){
         
         localStorage.setItem('data', JSON.stringify(datos))
         cargarDatos(datos)
+        toastr.success('Contraseña valida guardada correctamente');
     });
 })
 
