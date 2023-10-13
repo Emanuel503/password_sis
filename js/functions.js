@@ -22,17 +22,12 @@ $(document).ready(function(){
             const password2 = `s14p${nombre.replace(/a/g, '4').replace(/e/g, '3').replace(/i/g, '1').replace(/o/g, '0')}-s14p`
 
             let id = JSON.parse(localStorage.getItem('id'))
+            let mensaje = "";
+            let establecimiento = validarExistencia(nombre);
+            let correcta = null
 
-            $('#boton_modal').show();
-            $('#url_modal').text(nombre).attr('href', url)
-            $('#comando_modal').val(ssh)
-            $('#password1_modal').val(password1)
-            $('#password2_modal').val(password2)
-            $('#detalles').modal('show');
-            $('#url').val("");
-
-            if(!validarExistencia(nombre)){
-                $('#mensaje_modal').text("Establecimiento guardado correctamente")
+            if(!establecimiento){
+                mensaje = "Establecimiento guardado correctamente"
                 if(!id){
                     localStorage.setItem('id', JSON.stringify(1))
                     id = 1;
@@ -45,6 +40,7 @@ $(document).ready(function(){
                     ssh : ssh,
                     password1: password1,
                     password2: password2,
+                    correcta: null,
                 }
     
                 data.push(estab)
@@ -54,8 +50,13 @@ $(document).ready(function(){
 
                 cargarDatos(obtenerDatos())
             }else{
-                $('#mensaje_modal').text("Este establecimiento ya esta guardado")
-            }  
+                mensaje = "Este establecimiento ya esta guardado"
+                id = establecimiento.id; 
+                correcta = establecimiento.correcta;
+            }
+
+            $('#boton_modal').show();
+            mostrarModal(id, nombre, url, ssh, password1, password2, correcta, mensaje)
         }catch(err){
             console.log(err);
         }
@@ -93,14 +94,17 @@ $(document).ready(function(){
                         <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
                     <td>
-                        <input class="pass" readonly value="${estab.password1}">
+                        <input class="pass ${estab.correcta == "password1" ? 'correcta': ''}" readonly value="${estab.password1}">
                         <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
                     <td>
-                        <input class="pass" readonly value="${estab.password2}">
+                        <input class="pass ${estab.correcta == "password2" ? 'correcta': ''}" readonly value="${estab.password2}">
                         <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copiar al portapapeles" class="btn btn-success btn-sm float-end mx-2 copy"><img src="img/save-copy-24-filled.svg"></button>
                     </td>
-                    <td><button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Eliminar" onclick="confimarEliminar(${estab.id})" class="btn btn-danger btn-sm"><img src="img/x-bold.svg"></button></td>
+                    <td>
+                        <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Ver" onclick="mostrarModal('${estab.id}','${estab.nombre}', '${estab.url}', '${estab.ssh}', '${estab.password1}', '${estab.password2}', '${estab.correcta}')" class="btn btn-primary btn-sm"><img src="img/eye.svg"></button>
+                        <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Eliminar" onclick="confimarEliminar(${estab.id})" class="btn btn-danger btn-sm"><img src="img/x-bold.svg"></button>
+                    </td>
                 </tr>
             `)
         });
@@ -150,6 +154,28 @@ $(document).ready(function(){
         cargarDatos(datos);
     })
 
+    //Funcion para escoger password correcta
+    $('#content').on('click', '.buena', function () {
+        let id = $(this).data("data-id");
+        let idElemento = $(this).prop("id")
+               
+        datos = obtenerDatos()
+        const index = datos.findIndex(estab => estab.id == id);
+        
+        if(idElemento == "btn_buena_1"){
+            datos[index].correcta = "password1";
+            $('#password2_modal').removeClass("correcta")
+            $('#password1_modal').addClass("correcta")
+            
+        }else{
+            datos[index].correcta = "password2";
+            $('#password1_modal').removeClass("correcta")
+            $('#password2_modal').addClass("correcta")
+        }
+        
+        localStorage.setItem('data', JSON.stringify(datos))
+        cargarDatos(datos)
+    });
 })
 
 //Funcion para obtener los datos guardados
@@ -177,4 +203,29 @@ function confimarEliminar(id){
         <strong>Password 2:</strong> ${estab.password2}
     `)
     $('#eliminar').modal('show')
+}
+
+//Funcion para mostrar el modal
+function mostrarModal(id, nombre, url, ssh, password1, password2, correcta, mensaje = null){
+    $('#url_modal').text(nombre).attr('href', url)
+    $('#comando_modal').val(ssh)
+    $('#password1_modal').val(password1)
+    $('#password2_modal').val(password2)
+    $('#mensaje_modal').text(mensaje)
+    $('#url').val("");
+    $('#btn_buena_1').data("data-id", id);
+    $('#btn_buena_2').data("data-id", id);
+
+    $('#password1_modal').removeClass("correcta")
+    $('#password2_modal').removeClass("correcta")
+
+    if(correcta == "password1"){
+        $('#password1_modal').addClass("correcta")
+    }
+
+    if(correcta == "password2"){
+        $('#password2_modal').addClass("correcta")
+    }
+
+    $('#detalles').modal('show');
 }
