@@ -15,6 +15,19 @@ $(document).ready(function(){
             const data = obtenerDatos();
 
             const url = $('#url').val()
+            $('#url').val("");
+
+            const regex1 = /^http[s]?\b:\/\/\bsiap-(\w+)\.salud.gob.sv/gs;
+            const regex2 = /^http[s]?\b:\/\/\bsis-(\w+)\.salud.gob.sv/gs;
+            
+            const matches1 = url.match(regex1);
+            const matches2 = url.match(regex2);
+
+            if (!matches1 && !matches2) {
+                toastr.error('Ingresa una URL valida. Ej. https://siap-uzacamil.salud.gob.sv/');
+                return
+            }
+
             const nombre = url.split('-')[1].split('.')[0]
             const ssh = "ssh siap@"+url.split('/')[2]
 
@@ -218,7 +231,6 @@ function mostrarModal(id, nombre, url, ssh, password1, password2, correcta, mens
     $('#password1_modal').val(password1)
     $('#password2_modal').val(password2)
     $('#mensaje_modal').text(mensaje)
-    $('#url').val("");
     $('#btn_buena_1').data("data-id", id);
     $('#btn_buena_2').data("data-id", id);
 
