@@ -28,6 +28,8 @@
         <div id="datos" class="table-responsive">
             
         </div>
+
+        <button type="button" data-bs-toggle="modal" data-bs-target="#agregar" class="btn btn-primary mt-3">Agregar <br>manualmente</button>
           
         <div class="modal fade" id="detalles" tabindex="-1" aria-labelledby="detallesLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -116,6 +118,44 @@
                         <button type="button" class="btn btn-danger" id="btn_confirmar_eliminar">Eliminar</button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="agregarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="form_agregar_establecimiento">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-dark" id="agregarLabel">Agregar establecimiento manualmente</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="url_modal_agregar" class="form-label text-dark"><strong>URL: </strong></label>
+                                </div>
+                                <div class="col-7">
+                                    <input id="url_modal_agregar" class="form-control" type="text" required>
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="password_modal_agregar" class="form-label text-dark"><strong>Contraseña: </strong></label>
+                                </div>
+                                <div class="col-7">
+                                    <input id="password_modal_agregar" class="form-control" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-success">Agregar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

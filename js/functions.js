@@ -70,7 +70,6 @@ $(document).ready(function(){
                 toastr.info('Este establecimiento ya esta guardado');
             }
 
-            $('#boton_modal').show();
             mostrarModal(id, nombre, url, ssh, password1, password2, correcta, mensaje)
         }catch(err){
             console.log(err);
@@ -195,6 +194,74 @@ $(document).ready(function(){
         cargarDatos(datos)
         toastr.success('Contraseña valida guardada correctamente');
     });
+
+    //Envio de formulario
+    $('#form_agregar_establecimiento').submit(function(e){
+        try{
+            e.preventDefault(e);
+
+            const url = $('#url_modal_agregar').val()
+            $('#url_modal_agregar').val("");
+
+            const password = $('#password_modal_agregar').val()
+            $('#password_modal_agregar').val("");
+
+            const regex1 = /^http[s]?\b:\/\/\bsis-(\w+)\./gs;
+            
+            const matches1 = url.match(regex1);
+
+            if (!matches1) {
+                toastr.error('Ingresa una URL valida.');
+                return
+            }
+
+            const data = obtenerDatos();
+
+            const nombre = url.split('-')[1].split('.')[0]
+            const ssh = "ssh siap@"+url.split('/')[2]
+
+            let id = JSON.parse(localStorage.getItem('id'))
+            let mensaje = "";
+            let establecimiento = validarExistencia(nombre);
+            let correcta = "password1"
+
+            if(!establecimiento){
+                mensaje = "Establecimiento guardado correctamente"
+                if(!id){
+                    localStorage.setItem('id', JSON.stringify(1))
+                    id = 1;
+                }
+    
+                let estab = {
+                    id : id,
+                    url: url,
+                    nombre : nombre,
+                    ssh : ssh,
+                    password1: password,
+                    password2: password,
+                    correcta: "password1",
+                }
+    
+                data.push(estab)
+    
+                localStorage.setItem('id', JSON.stringify(parseInt(id) + 1))
+                localStorage.setItem('data', JSON.stringify(data))
+
+                cargarDatos(obtenerDatos())
+                toastr.success('Establecimiento guardado correctamente');
+            }else{
+                mensaje = "Este establecimiento ya esta guardado"
+                id = establecimiento.id; 
+                toastr.info('Este establecimiento ya esta guardado');
+            }
+
+            $('#agregar').modal('hide');
+
+            mostrarModal(id, nombre, url, ssh, password, password, correcta, mensaje)
+        }catch(err){
+            console.log(err);
+        }
+    })
 })
 
 //Funcion para obtener los datos guardados
@@ -246,4 +313,5 @@ function mostrarModal(id, nombre, url, ssh, password1, password2, correcta, mens
     }
 
     $('#detalles').modal('show');
+    $('#boton_modal').show();
 }
